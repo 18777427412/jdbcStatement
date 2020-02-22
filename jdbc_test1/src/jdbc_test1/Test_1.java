@@ -1,6 +1,7 @@
 package jdbc_test1;
 
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.mysql.jdbc.Connection;
@@ -74,9 +75,45 @@ public class Test_1 {
 			e.printStackTrace();
 		}
 	}
+	
+	private void sqlQuery() {
+		init();
+		String sql="select * from stu";
+		ResultSet res = null;
+		try {
+			stmt=(Statement) connection.createStatement();
+			res=stmt.executeQuery(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			while(res.next()) {
+				int id=res.getInt("id");
+				String str=res.getString("name");
+				int cid=res.getInt("cid");
+				String phone=res.getString("phone");
+				System.out.println(id+"\t"+str+"\t"+cid+"\t"+phone);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}catch (Exception e1) {
+			e1.printStackTrace();
+		}finally {
+			try {
+				if(stmt!=null)stmt.close();
+			}catch (SQLException e) {
+				// TODO: handle exception
+			}catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+		
+		
+	}
 
 	public static void main(String[] args) {
-		new Test_1().sqlupdate();
+		new Test_1().sqlQuery();
 		
 	}
 
